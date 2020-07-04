@@ -128,7 +128,9 @@ while True:
     print("Yeni Kayıt için : r || Kişi silmek için d tuşuna basınız. ")
     c = input("> ")
     if c == "d":
-        id_card_read()
+        #id_card_read()
+        print("Kartı okutunuz !!")
+        id_number = input("> ")
         users = []
         for (dirpath, dirnames, filenames) in os.walk("users"):
             users.extend(filenames)
@@ -143,16 +145,21 @@ while True:
             print("Kart Tanımsız !")
 
     if c == "r":
-        id_card_read()
+        #id_card_read()
+        print("Kartı okutunuz !!")
+        id_number = input("> ")
         while True:
             print("Kullanıcının yetkisini giriniz !!")
             rank = input("> ")
-            if 0<=int(rank)<=9:
-                print("Geçerli yetki !")
-                break
-            else:
-                print("Geçersiz yetki !!")
-
+            try:
+                if 0<=int(rank)<=9:
+                    print("Gecerli yetki !")
+                    break
+                else:
+                    print("Gecersiz yetki !")
+            except:
+                print("Gecersiz yetki !")
+                pass
         i = 0
         parmak = ""
         while True:
