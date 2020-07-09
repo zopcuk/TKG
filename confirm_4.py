@@ -91,8 +91,8 @@ def fingerprint_scanner():
                         template = p['fp{}'.format(j)]
                         id_number_temp = p['id']
                         rank_temp = p['rank']
-
                     finger.send_fpdata(template, "char", 2)
+
                     i = finger.create_model()
                     if i == fingerprintlib.OK:
                         print("Parmak izi bulundu.")
@@ -100,7 +100,6 @@ def fingerprint_scanner():
                         break
                     else:
                         pass
-
                 if check:
                     break
             if check:
