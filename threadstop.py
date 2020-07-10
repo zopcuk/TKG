@@ -1,6 +1,7 @@
 import time
 for i in range(5):
     t0= time.time()
+    print(time.time())
     time.sleep(1)
     t1 = time.time() - t0
     print("Time elapsed: ", t1)

@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="367cd9bc-1949-4597-8940-95063fe2627d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/confirm_4.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/json_recieve.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adafruit_fp.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/confirm_5.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/register_5.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users/1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users/4269.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users/5454.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/confirm_3.py" beforeDir="false" afterPath="$PROJECT_DIR$/confirm_3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emit_log1.py" beforeDir="false" afterPath="$PROJECT_DIR$/emit_log1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imagerecive.py" beforeDir="false" afterPath="$PROJECT_DIR$/imagerecive.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/register_4.py" beforeDir="false" afterPath="$PROJECT_DIR$/register_4.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/threadstop.py" beforeDir="false" afterPath="$PROJECT_DIR$/threadstop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,7 +40,7 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager" selected="Python.threadstop">
-    <configuration name="emit_log1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="app2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TKG_2" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -47,11 +48,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../python-fingerprint-recognition-master" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/emit_log1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../python-fingerprint-recognition-master/app2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -102,7 +103,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="snap7-test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TKG_2" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -110,11 +111,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Desktop/home-pi-desktop/plc-test" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/Desktop/home-pi-desktop/plc-test/snap7-test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -147,10 +148,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.threadstop" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.app2" />
         <item itemvalue="Python.json_recieve" />
         <item itemvalue="Python.imagerecive" />
-        <item itemvalue="Python.emit_log1" />
-        <item itemvalue="Python.snap7-test" />
       </list>
     </recent_temporary>
   </component>
@@ -179,38 +180,38 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="92" y="92" width="1182" height="584" key="DiffContextDialog/0.0.1366.768@0.0.1366.768" timestamp="1593785636841" />
-    <state width="1345" height="136" key="GridCell.Tab.0.bottom" timestamp="1594298840499">
+    <state width="1345" height="152" key="GridCell.Tab.0.bottom" timestamp="1594402433591">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1345" height="136" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1594298840499" />
-    <state width="1345" height="136" key="GridCell.Tab.0.center" timestamp="1594298840499">
+    <state width="1345" height="152" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1594402433591" />
+    <state width="1345" height="152" key="GridCell.Tab.0.center" timestamp="1594402433591">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1345" height="136" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1594298840499" />
-    <state width="1345" height="136" key="GridCell.Tab.0.left" timestamp="1594298840499">
+    <state width="1345" height="152" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1594402433591" />
+    <state width="1345" height="152" key="GridCell.Tab.0.left" timestamp="1594402433591">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1345" height="136" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1594298840499" />
-    <state width="1345" height="136" key="GridCell.Tab.0.right" timestamp="1594298840499">
+    <state width="1345" height="152" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1594402433591" />
+    <state width="1345" height="152" key="GridCell.Tab.0.right" timestamp="1594402433591">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1345" height="136" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1594298840499" />
-    <state width="1345" height="238" key="GridCell.Tab.1.bottom" timestamp="1593885552091">
+    <state width="1345" height="152" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1594402433591" />
+    <state width="1345" height="238" key="GridCell.Tab.1.bottom" timestamp="1594382417759">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1345" height="238" key="GridCell.Tab.1.bottom/0.0.1366.768@0.0.1366.768" timestamp="1593885552091" />
-    <state width="1345" height="238" key="GridCell.Tab.1.center" timestamp="1593885552091">
+    <state width="1345" height="238" key="GridCell.Tab.1.bottom/0.0.1366.768@0.0.1366.768" timestamp="1594382417759" />
+    <state width="1345" height="238" key="GridCell.Tab.1.center" timestamp="1594382417759">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1345" height="238" key="GridCell.Tab.1.center/0.0.1366.768@0.0.1366.768" timestamp="1593885552091" />
-    <state width="1345" height="238" key="GridCell.Tab.1.left" timestamp="1593885552091">
+    <state width="1345" height="238" key="GridCell.Tab.1.center/0.0.1366.768@0.0.1366.768" timestamp="1594382417759" />
+    <state width="1345" height="238" key="GridCell.Tab.1.left" timestamp="1594382417759">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1345" height="238" key="GridCell.Tab.1.left/0.0.1366.768@0.0.1366.768" timestamp="1593885552091" />
-    <state width="1345" height="238" key="GridCell.Tab.1.right" timestamp="1593885552091">
+    <state width="1345" height="238" key="GridCell.Tab.1.left/0.0.1366.768@0.0.1366.768" timestamp="1594382417759" />
+    <state width="1345" height="238" key="GridCell.Tab.1.right" timestamp="1594382417759">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1345" height="238" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1593885552091" />
+    <state width="1345" height="238" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1594382417759" />
     <state x="184" y="27" key="SettingsEditor" timestamp="1593602309536">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
