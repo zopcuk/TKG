@@ -16,17 +16,27 @@ for p in data['user']:
 print(id)
 k=0
 l=0
-for i in range(8):
-    k = template1[i] - template1[i+1]
-    if k < 0 :
-        k = k*(-1)
-    l = l + k
-print(l/2)
+m=0
+for j in range(1536):
+    for i in range(8):
+        if (m+i+1) >1535:
+            break
+        k = template1[m+i] - template1[m+i+1]
+        if k < 0 :
+            k = k*(-1)
+        l = l + k
+    m = m+1
+print(l)
 k=0
 l=0
-for i in range(8):
-    k = template2[i] - template2[i+1]
-    if k < 0 :
-        k = k*(-1)
-    l = l + k
-print(l/2)
+m=0
+for j in range(1536):
+    for i in range(8):
+        if (m+i+1) >1535:
+            break
+        k = template2[m+i] - template2[m+i+1]
+        if k < 0 :
+            k = k*(-1)
+        l = l + k
+    m = m+1
+print(l)

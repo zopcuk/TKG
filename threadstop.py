@@ -1,13 +1,4 @@
-import time
-for i in range(5):
-    t0= time.time()
-    print(time.time())
-    time.sleep(1)
-    t1 = time.time() - t0
-    print("Time elapsed: ", t1)
-
-
-'''# Python program showing
+# Python program showing
 # how to kill threads
 # using set/reset stop
 # flag
@@ -34,4 +25,13 @@ t1.join()
 time.sleep(1)
 stop_threads = False
 t1.join()
-print('thread killed')'''
+print('thread killed')
+
+
+'''import time
+for i in range(5):
+    t0= time.time()
+    print(time.time())
+    time.sleep(1)
+    t1 = time.time() - t0
+    print("Time elapsed: ", t1)'''
