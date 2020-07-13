@@ -76,7 +76,7 @@ def get_fingerprint():
 def fingerprint_scanner():
     while True:
         if get_fingerprint():
-            print("Detected #", finger.finger_id, "with confidence", finger.confidence)
+            # print("Detected #", finger.finger_id, "with confidence", finger.confidence)
 
             users = []
             for (dirpath, dirnames, filenames) in walk("users"):
@@ -106,10 +106,10 @@ def fingerprint_scanner():
                     pass
             elif not check:
                 print("Parmak izi bulunamadı.")
-
+                print("Kart veya Parmak izi bilgisi bekleniyor...")
         else:
             print("Parmak izi bulunamadı.")
-
+            print("Kart veya Parmak izi bilgisi bekleniyor...")
 def user_send(id_number, rank):
 
     if not rank:

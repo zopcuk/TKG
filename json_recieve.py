@@ -2,7 +2,7 @@
 import pika
 import json
 credentials = pika.PlainCredentials(username='test', password='test')
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='192.168.1.10', credentials=credentials))
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='192.168.1.34', credentials=credentials))
 channel = connection.channel()
 channel.exchange_declare(exchange='logs', exchange_type='fanout')
 result = channel.queue_declare(queue='', exclusive=True)

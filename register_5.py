@@ -20,22 +20,24 @@ fp5 = []
 fp6 = []
 users = []
 loc_max = 0
-for (dirpath, dirnames, filenames) in walk("users"):
-    users.extend(filenames)
-    break
-if len(users) == 0:
-    loc_max = 0
-else:
-    for i in users:
-        with open("users/{}".format(i), 'r') as json_file:
-            data = json.load(json_file)
-        loc_temp = []
-        for p in data['user']:
-            loc_temp = p['loc']
+def loc_find():
+    global loc_max
+    for (dirpath, dirnames, filenames) in walk("users"):
+        users.extend(filenames)
+        break
+    if len(users) == 0:
+        loc_max = 0
+    else:
+        for i in users:
+            with open("users/{}".format(i), 'r') as json_file:
+                data = json.load(json_file)
+            loc_temp = []
+            for p in data['user']:
+                loc_temp = p['loc']
 
-        if loc_max < loc_temp[2]:
-            loc_max = loc_temp[2]
-    loc_max = loc_max+1
+            if loc_max < loc_temp[2]:
+                loc_max = loc_temp[2]
+        loc_max = loc_max+1
 
 def id_card_read():
     fp = open('/dev/hidraw0', 'rb')
@@ -121,10 +123,10 @@ def finger_get(location):
             print("Diğer hatalar")
         return False, False
 
-    print("Storing model #%d..." % location, end="", flush=True)
+    print("Model no #%d..." % location)
     i = finger.store_model(location)
     if i == fingerprintlib.OK:
-        print("Stored")
+        #print("Stored")
         fp_buffer1 = finger.get_fpdata("char", 1)
         fp_buffer2 = finger.get_fpdata("char", 2)
         return fp_buffer1, fp_buffer2
@@ -176,9 +178,9 @@ while True:
     print("Yeni Kayıt için : r || Kişi silmek için d tuşuna basınız. ")
     c = input("> ")
     if c == "d":
-        #id_card_read()
-        print("Kartı okutunuz !!")
-        id_number = input("> ")
+        id_card_read()
+        #print("Kartı okutunuz !!")
+        #id_number = input("> ")
         users = []
         for (dirpath, dirnames, filenames) in os.walk("users"):
             users.extend(filenames)
@@ -211,6 +213,7 @@ while True:
         i = 0
         parmak = ""
         while True:
+            loc_find()
             if i == 0:
                 parmak = "BAŞ"
             if i == 1:
