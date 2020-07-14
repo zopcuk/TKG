@@ -33,55 +33,62 @@ fp6 = []
 users = []
 loc_max = 0
 stop_event = threading.Event()
+text_time = 0.25
 
-for (dirpath, dirnames, filenames) in walk("users"):
-    users.extend(filenames)
-    break
-if len(users) == 0:
-    loc_max = 0
-else:
-    for i in users:
-        with open("users/{}".format(i), 'r') as json_file:
-            data = json.load(json_file)
-        loc_temp = []
-        for p in data['user']:
-            loc_temp = p['loc']
 
-        if loc_max < loc_temp[2]:
-            loc_max = loc_temp[2]
-    loc_max = loc_max + 1
+def loc_find():
+    global loc_max
+    for (dirpath, dirnames, filenames) in walk("users"):
+        users.extend(filenames)
+        break
+    if len(users) == 0:
+        loc_max = 0
+    else:
+        for i in users:
+            with open("users/{}".format(i), 'r') as json_file:
+                data = json.load(json_file)
+            loc_temp = []
+            for p in data['user']:
+                loc_temp = p['loc']
+
+            if loc_max < loc_temp[2]:
+                loc_max = loc_temp[2]
+        loc_max = loc_max + 1
 
 
 def id_card_read():
     fp = open('/dev/hidraw0', 'rb')
     global id_number_temp, get_id
-    while True:
-        sleep(1)
-        get_id = False
-        shift = False
-        done = False
+    try:
+        while True:
+            sleep(1)
+            get_id = False
+            shift = False
+            done = False
 
-        while not done:
-            sleep(.05)
-            buffer = fp.read(8)
-            for c in buffer:
-                if c > 0:
-                    if int(c) == 40:
-                        done = True
-                        break
-                    if shift:
-                        if int(c) == 2:
-                            shift = True
+            while not done:
+                sleep(.05)
+                buffer = fp.read(8)
+                for c in buffer:
+                    if c > 0:
+                        if int(c) == 40:
+                            done = True
+                            break
+                        if shift:
+                            if int(c) == 2:
+                                shift = True
+                            else:
+                                id_number_temp += hid2[int(c)]
+                                shift = False
                         else:
-                            id_number_temp += hid2[int(c)]
-                            shift = False
-                    else:
-                        if int(c) == 2:
-                            shift = True
-                        else:
-                            id_number_temp += hid[int(c)]
-        fp.close()
-        get_id = True
+                            if int(c) == 2:
+                                shift = True
+                            else:
+                                id_number_temp += hid[int(c)]
+            # fp.close()
+            get_id = True
+    except:
+        pass
 
 
 def finger_get(location):
@@ -90,70 +97,89 @@ def finger_get(location):
     for fingerimg in range(1, 3):
         if fingerimg == 1 and not stop_event.is_set():
             # print("Parmağınızı sensöre yerleştirin...", end="", flush=True)
-            textLabel.configure(text="Parmağınızı sensöre yerleştirin...")
+            textLabel2.configure(text="Parmağınızı sensöre yerleştirin...")
+            sleep(text_time)
         elif not stop_event.is_set():
             # print("Aynı parmağı tekrar yerleştirin...", end="", flush=True)
-            textLabel.configure(text="Aynı parmağı tekrar yerleştirin...")
-
+            textLabel2.configure(text="Aynı parmağı tekrar yerleştirin...")
+            sleep(text_time)
         while not stop_event.is_set() and not stop_event.is_set():
             i = finger.get_image()
             if i == fingerprintlib.OK and not stop_event.is_set():
                 # print("Parmak izi alındı")
-                textLabel.configure(text="Parmak izi alındı")
+                textLabel2.configure(text="Parmak izi alındı")
+                sleep(text_time)
                 break
             if i == fingerprintlib.NOFINGER and not stop_event.is_set():
                 # print(".", end="", flush=True)
-                textLabel.configure(text="Bekleniyor")
+                # textLabel.configure(text="Bekleniyor")
+                pass
             elif i == fingerprintlib.IMAGEFAIL and not stop_event.is_set():
                 #print("Görüntü hatası")
-                textLabel.configure(text="Görüntü hatası")
+                textLabel2.configure(text="Görüntü hatası")
+                sleep(text_time)
                 return False
             elif not stop_event.is_set():
                 #print("Diğer hatalar.")
-                textLabel.configure(text="Diğer hatalar.")
+                textLabel2.configure(text="Diğer hatalar.")
+                sleep(text_time)
                 return False
 
         #print("İşleniyor...", end="", flush=True)
-        textLabel.configure(text="İşleniyor...")
+        if not stop_event.is_set():
+            textLabel2.configure(text="İşleniyor...")
+            sleep(text_time)
         i = finger.image_2_tz(fingerimg)
         if i == fingerprintlib.OK and not stop_event.is_set():
             # print("Parmak izi işlendi")
-            textLabel.configure(text="Parmak izi işlendi")
+            textLabel2.configure(text="Parmak izi işlendi")
+            sleep(text_time)
         else:
             if i == fingerprintlib.IMAGEMESS and not stop_event.is_set():
                 # print("Parmak izi çok bulanık")
-                textLabel.configure(text="Parmak izi çok bulanık")
+                textLabel2.configure(text="Parmak izi çok bulanık")
+                sleep(text_time)
             elif i == fingerprintlib.FEATUREFAIL and not stop_event.is_set():
                 # print("Parmak izi özellikleri tanımlanamadı.")
-                textLabel.configure(text="Parmak izi özellikleri tanımlanamadı.")
+                textLabel2.configure(text="Parmak izi özellikleri tanımlanamadı.")
+                sleep(text_time)
             elif i == fingerprintlib.INVALIDIMAGE and not stop_event.is_set():
                 # print("Parmak izi geçersiz.")
-                textLabel.configure(text="Parmak izi geçersiz.")
+                textLabel2.configure(text="Parmak izi geçersiz.")
+                sleep(text_time)
             elif not stop_event.is_set():
                 #print("Diğer hatalar.")
-                textLabel.configure(text="Diğer hatalar.")
+                textLabel2.configure(text="Diğer hatalar.")
+                sleep(text_time)
             return False
 
         if fingerimg == 1 and not stop_event.is_set():
             #print("Parmağınızı kaldırın !!")
-            textLabel.configure(text="Parmağınızı kaldırın !!")
+            textLabel2.configure(text="Parmağınızı kaldırın !!")
+            sleep(text_time)
             sleep(1)
             while i != fingerprintlib.NOFINGER  and not stop_event.is_set():
                 i = finger.get_image()
 
     # print("Parmak izleri eşleştiriliyor...", end="", flush=True)
-    textLabel.configure(text="Parmak izleri eşleştiriliyor...")
+    textLabel2.configure(text="Parmak izleri eşleştiriliyor...")
+    sleep(text_time)
     i = finger.create_model()
     if i == fingerprintlib.OK and not stop_event.is_set():
         # print("Parmak izleri eşleşdi")
-        textLabel.configure(text="Parmak izleri eşleşdi")
+        textLabel2.configure(text="Parmak izleri eşleşdi")
+        sleep(text_time)
     else:
         if i == fingerprintlib.ENROLLMISMATCH and not stop_event.is_set():
             # print("Parmak izleri eşleşmedi")
-            textLabel.configure(text="Parmak izleri eşleşmedi")
+            textLabel2.configure(text="Parmak izleri eşleşmedi", foreground="red")
+            sleep(text_time + text_time)
+            textLabel2.configure(text="", foreground="black")
+
         elif not stop_event.is_set():
             # print("Diğer hatalar")
-            textLabel.configure(text="Diğer hatalar.")
+            textLabel2.configure(text="Diğer hatalar.")
+            sleep(text_time)
         return False, False
 
     # print("Model no #%d..." % location)
@@ -166,20 +192,24 @@ def finger_get(location):
     else:
         if i == fingerprintlib.BADLOCATION and not stop_event.is_set():
             # print("Bad storage location")
-            textLabel.configure(text="Konum hatası.")
+            textLabel2.configure(text="Konum hatası.")
+            sleep(text_time)
         elif i == fingerprintlib.FLASHERR and not stop_event.is_set():
             # print("Flash storage error")
-            textLabel.configure(text="Hafıza hatası.")
+            textLabel2.configure(text="Hafıza hatası.")
+            sleep(text_time)
         elif not stop_event.is_set():
             # print("Other error")
-            textLabel.configure(text="Diğer hatalar.")
+            textLabel2.configure(text="Diğer hatalar.")
+            sleep(text_time)
         return False
 
 
 def user_save():
     global fp1, fp2, fp3, fp4, fp5, fp6, id_number, rank, loc_max
     # print("Bilgiler kaydediliyor lütfen bekleyin...")
-    textLabel.configure(text="Bilgiler kaydediliyor lütfen bekleyin...")
+    textLabel2.configure(text="Bilgiler kaydediliyor lütfen bekleyin...")
+    sleep(text_time)
     data = {}
     data['user'] = []
     data['user'].append({
@@ -197,9 +227,8 @@ def user_save():
     with open('users/{}.json'.format(id_number), 'w') as outfile:
         json.dump(data, outfile)
     # print("Kullanıcı bilgileri kaydedildi")
-    textLabel.configure(text="Kullanıcı bilgileri kaydedildi"
-
-    loc_max = loc_max + 3
+    textLabel2.configure(text="Kullanıcı bilgileri kaydedildi")
+    sleep(text_time)
 
     try:
         credentials = pika.PlainCredentials(username='test', password='test')
@@ -213,11 +242,13 @@ def user_save():
         # print("Kullanıcı bilgileri dağıtıldı.")
     except:
         pass
+    win.destroy()
 
 
 def register():
-    global fp1, fp2, fp3, fp4, fp5, fp6, id_number, id_number_temp, rank, loc_max, textLabel, get_id, get_rank
+    global fp1, fp2, fp3, fp4, fp5, fp6, id_number, id_number_temp, rank, loc_max, get_id, get_rank
     id_number = ""
+    id_number_temp = ""
     # print("Yeni Kayıt için : r || Kişi silmek için d tuşuna basınız. ")
     c = "r"
     if c == "d":
@@ -241,18 +272,29 @@ def register():
         # id_card_read()
         # print("Kartı okutunuz !!")
         textLabel.configure(text="Kartı okutunuz")
+
         while not stop_event.is_set() and not get_id:
             sleep(.1)
         id_number = id_number_temp
+        users = []
+        for (dirpath, dirnames, filenames) in walk("users"):
+            users.extend(filenames)
+            break
+        if "{}.json".format(id_number) in users:
+            textLabel.configure(text="Bu kart tanımlıdır !!")
+            textLabel2.configure(text="Lütfen önce kayıtı siliniz.")
+            sleep(text_time*6)
+            win.destroy()
         # id_number = input("> ")
-        textLabel.configure(text="Kullanıcının yetkisini giriniz")
+        '''textLabel.configure(text="Kullanıcının yetkisini giriniz")
         root_tk()
         while not stop_event.is_set() and not get_rank:
-            sleep(.1)
+            sleep(.1)'''
 
         i = 0
         parmak = ""
         while not stop_event.is_set():
+            loc_find()
             if i == 0:
                 parmak = "BAŞ"
             if i == 1:
@@ -296,8 +338,8 @@ def root_tk():
         if len(value1) > 3: password1.set(value1[:4])
 
     root = tk.Toplevel()
-    w = 425
-    h = root.winfo_screenheight()-100
+    w = 375
+    h = root.winfo_screenheight()
     ws = root.winfo_screenwidth()
     hs = root.winfo_screenheight()
     x = (ws / 2) - (w / 2)
@@ -309,11 +351,11 @@ def root_tk():
     root.columnconfigure(0, weight=1)
     root.rowconfigure(0, weight=1)
     '''///////////////////////////////////////'''
-    rootColor = "#189ad3"
-    buttoncolor = "#107dac"
-    cancelColor = "#f09609"
+    rootColor = "#7c9a92"
+    buttoncolor = "#314448"
+    cancelColor = "#b22222"
     font = "Helvetica 36"
-    textFont = "Helvetica 20"
+    textFont = "Courier 16"
 
     password1 = tk.StringVar()  # Password variable
     password1.trace('w', limitSizeDay)
@@ -338,7 +380,7 @@ def root_tk():
     passwordlabel1.rowconfigure(0, weight=1)
     textLabel1 = tk.Label(passwordlabel1, text="Kullanıcı Yetkisi :", bg=rootColor, font=textFont)
     textLabel1.grid(column=0, row=0, sticky="e")
-    entry1 = tk.Entry(passwordlabel1, textvariable=password1, highlightthickness=0, width=10, show="", font=textFont,
+    entry1 = tk.Entry(passwordlabel1, textvariable=password1, highlightthickness=0, width=8, show="", font=textFont,
                       border=0, disabledbackground=buttoncolor)
     entry1.grid(column=1, row=0, sticky="w")
     '''///////////////////////////////////////////////'''
@@ -368,6 +410,7 @@ def root_tk():
             rank = entry1.get()
             get_rank = True
             root.destroy()
+            resetButton()
         else:
             pass
     b1 = tk.Button(numbersLabel, text="1", bg=buttoncolor, width=7, border=0, highlightthickness=0,
@@ -422,22 +465,22 @@ def root_tk():
     cancelLabel.grid(column=0, row=2, sticky="ewsn")
     cancelLabel.columnconfigure(0, weight=1)
     cancelLabel.rowconfigure(0, weight=1)
-    cancelButton = tk.Button(cancelLabel, text="CANCEL", width=20, font="Helvetica 20 bold", bg=cancelColor, border=0,
+    cancelButton = tk.Button(cancelLabel, text="CANCEL", width=20, font="Courier 16", bg=cancelColor, border=0,
                              highlightthickness=0, activebackground=cancelColor, command=cancel)
     cancelButton.grid(column=0, row=0, sticky="nsew")
-
+    root.config(cursor='none')
     root.bind("<Escape>", exit)
     root.mainloop()
 '''////////////////////////////////////////'''
 
 
 def resetButton():
-    global textLabel
+    global textLabel, textLabel2, win
     def cancel():
         stop_event.set()
         win.destroy()
-    winColor = "#106181"
-    cancelColor = "#f09609"
+    winColor = "#314448"
+    cancelColor = "#b22222"
     win = tk.Toplevel(background=winColor)
     win.wm_title("Home Position")
     w = 425
@@ -458,22 +501,22 @@ def resetButton():
     winFrame = ttk.Frame(win, style='new.TFrame')
     winFrame.grid(column=0, row=0, sticky="nsew")
     winFrame.columnconfigure(0, weight=1)
-    winFrame.rowconfigure(0, weight=2)
+    winFrame.rowconfigure(0, weight=1)
     winFrame.rowconfigure(1, weight=2)
-    winFrame.rowconfigure(2, weight=1)
-    winFrame.rowconfigure(3, weight=2)
+    winFrame.rowconfigure(2, weight=2)
+    winFrame.rowconfigure(3, weight=1)
     '''//////////////////////////////////'''
 
     headLabel = tk.Label(winFrame, text="KAYIT", bg=winColor, font="Courier 18",
                          border=0, highlightthickness=0)
     headLabel.grid(row=0, column=0, sticky="ewsn")
 
-    textLabel = tk.Label(winFrame, text="Tekrar aynı\nparmağınızı okutunuz", bg=winColor, font="Courier 16",
+    textLabel = tk.Label(winFrame, text="", bg=winColor, font="Courier 16",
                          border=0, highlightthickness=0)
     textLabel.grid(row=1, column=0, sticky="ewsn")
 
-    spacer = tk.Label(winFrame, bg=winColor, border=0, highlightthickness=0)
-    spacer.grid(row=2, column=0, sticky="ewsn")
+    textLabel2 = tk.Label(winFrame, text="", bg=winColor, border=0, highlightthickness=0, font="Courier 14")
+    textLabel2.grid(row=2, column=0, sticky="ewsn")
 
     cancelLabel = tk.Label(winFrame, bg=cancelColor)
     cancelLabel.grid(column=0, row=3, sticky="ewsn")
@@ -485,8 +528,9 @@ def resetButton():
     win.bind("<Escape>", exit)
 
     APP = threading.Thread(target=register)
+    APP.daemon = True
     APP.start()
-
+    win.config(cursor='none')
     win.mainloop()
     '''////////////////////////////////////////////////////////////////'''
 
@@ -495,8 +539,8 @@ def resetButton():
 '''////////////////////////////////////////'''
 root = tk.Tk()
 root.title("INFO")
-#root.wm_attributes('-fullscreen', 'true')
-#root.wm_attributes('-topmost', 'true')
+root.wm_attributes('-fullscreen', 'true')
+root.wm_attributes('-topmost', 'true')
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 '''///////////////////////////////////////'''
@@ -504,6 +548,7 @@ reg_color= "#7c9a92"
 del_color = "#7c9a92"
 sync_color = "#7c9a92"
 side_color = "#314448"
+back_color = "#e0dab8"
 activecolor="#6ea023"
 font = "Helvetica 40"
 
@@ -520,7 +565,7 @@ sidelabel1.grid(column=0, row=0, sticky="ewns")
 sidelabel2 = tk.Label(content, bg=side_color)
 sidelabel2.grid(column=2, row=0, sticky="ewns")
 '''//////////////////////////////////////'''
-menulabel = tk.Label(content, text="Kartı okutunuz", border=0, bg="#e0dab8")
+menulabel = tk.Label(content, border=0, bg="#e0dab8")
 menulabel.grid(column=1, row=0, sticky="ewsn")
 menulabel.columnconfigure(0, weight=1)
 menulabel.rowconfigure(0, weight=1)
@@ -537,8 +582,11 @@ def kayit_press(event):
 
 
 def kayit_release(event):
+    global get_rank
     kayit_button.configure(bg=reg_color, activebackground=reg_color)
-    resetButton()
+    stop_event.clear()
+    root_tk()
+
 
 kayit_button.bind("<ButtonPress>", kayit_press)
 kayit_button.bind("<ButtonRelease>", kayit_release)
@@ -546,7 +594,7 @@ kayit_button.bind("<ButtonRelease>", kayit_release)
 sync_icon = tk.PhotoImage(file=r"cloud-server.png")
 sync_icon = sync_icon.subsample(5, 5)
 sync_button = tk.Button(menulabel, image=sync_icon, bg=sync_color, border=1, highlightthickness=0, font=font,
-                        activebackground=activecolor)
+                        activebackground=sync_color)
 sync_button.grid(column=0, row=1, ipadx=120, ipady=5)
 
 
@@ -562,7 +610,7 @@ sync_button.bind("<ButtonPress>", sync_press)
 sync_button.bind("<ButtonRelease>", sync_release)
 '''//////////////////////////////////////'''
 delete_button = tk.Button(menulabel, text=" Kullanıcı Sil ", bg=del_color, border=1, highlightthickness=0, font=font,
-                         activebackground=activecolor)
+                          activebackground=del_color)
 delete_button.grid(column=0, row=2)
 
 
@@ -579,6 +627,7 @@ delete_button.bind("<ButtonRelease>", delete_release)
 '''//////////////////////////////////////'''
 root.bind("<Escape>", exit)
 APP2 = threading.Thread(target=id_card_read)
+APP2.daemon = True
 APP2.start()
-# root.config(cursor='none')
+root.config(cursor='none')
 root.mainloop()

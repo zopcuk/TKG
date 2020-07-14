@@ -20,6 +20,7 @@ fp5 = []
 fp6 = []
 users = []
 loc_max = 0
+
 def loc_find():
     global loc_max
     for (dirpath, dirnames, filenames) in walk("users"):
