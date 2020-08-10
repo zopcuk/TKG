@@ -34,10 +34,11 @@ users = []
 loc_max = 0
 stop_event = threading.Event()
 text_time = 0.25
-
+c = ""
 
 def loc_find():
     global loc_max
+    users = []
     for (dirpath, dirnames, filenames) in walk("users"):
         users.extend(filenames)
         break
@@ -57,11 +58,11 @@ def loc_find():
 
 
 def id_card_read():
-    fp = open('/dev/hidraw0', 'rb')
     global id_number_temp, get_id
     try:
         while True:
             sleep(1)
+            fp = open('/dev/hidraw0', 'rb')
             get_id = False
             shift = False
             done = False
@@ -85,7 +86,7 @@ def id_card_read():
                                 shift = True
                             else:
                                 id_number_temp += hid[int(c)]
-            # fp.close()
+            fp.close()
             get_id = True
     except:
         pass
@@ -148,22 +149,24 @@ def finger_get(location):
                 textLabel2.configure(text="Parmak izi geçersiz.")
                 sleep(text_time)
             elif not stop_event.is_set():
-                #print("Diğer hatalar.")
+                # print("Diğer hatalar.")
                 textLabel2.configure(text="Diğer hatalar.")
                 sleep(text_time)
             return False
 
-        if fingerimg == 1 and not stop_event.is_set():
+        if not stop_event.is_set():
             #print("Parmağınızı kaldırın !!")
             textLabel2.configure(text="Parmağınızı kaldırın !!")
             sleep(text_time)
             sleep(1)
-            while i != fingerprintlib.NOFINGER  and not stop_event.is_set():
+            while i != fingerprintlib.NOFINGER and not stop_event.is_set():
                 i = finger.get_image()
 
     # print("Parmak izleri eşleştiriliyor...", end="", flush=True)
     textLabel2.configure(text="Parmak izleri eşleştiriliyor...")
     sleep(text_time)
+    fp_buffer1 = finger.get_fpdata("char", 1)
+    fp_buffer2 = finger.get_fpdata("char", 2)
     i = finger.create_model()
     if i == fingerprintlib.OK and not stop_event.is_set():
         # print("Parmak izleri eşleşdi")
@@ -186,8 +189,7 @@ def finger_get(location):
     i = finger.store_model(location)
     if i == fingerprintlib.OK and not stop_event.is_set():
         # print("Stored")
-        fp_buffer1 = finger.get_fpdata("char", 1)
-        fp_buffer2 = finger.get_fpdata("char", 2)
+
         return fp_buffer1, fp_buffer2
     else:
         if i == fingerprintlib.BADLOCATION and not stop_event.is_set():
@@ -250,36 +252,28 @@ def register():
     id_number = ""
     id_number_temp = ""
     # print("Yeni Kayıt için : r || Kişi silmek için d tuşuna basınız. ")
-    c = "r"
+    textLabel.configure(text="Kartı okutunuz")
+    textLabel2.configure(text="Bekleniyor...")
+    while not stop_event.is_set() and not get_id:
+        sleep(.1)
+    id_number = id_number_temp
+    textLabel2.configure(text="Kart okundu")
+    users = []
+    for (dirpath, dirnames, filenames) in os.walk("users"):
+        users.extend(filenames)
+        break
     if c == "d":
-        # id_card_read()
-        print("Kartı okutunuz !!")
-        id_number = input("> ")
-        users = []
-        for (dirpath, dirnames, filenames) in os.walk("users"):
-            users.extend(filenames)
-            break
         if "{}.json".format(id_number) in users:
-            print("Kullanıcı bulundu.")
-            print("Kullanıcı siliniyor.")
-            sleep(1)
+            textLabel2.configure(text="Kullanıcı siliniyor.")
+            sleep(text_time)
             os.remove("users/{}.json".format(id_number))
-            print("Kullanıcı silindi.")
+            textLabel2.configure(text="Kullanıcı silindi.")
+            sleep(text_time*2)
         else:
-            print("Kart Tanımsız !")
-
+            textLabel2.configure(text="Tanımsız Kart !")
+            sleep(text_time * 2)
+        win.destroy()
     if c == "r":
-        # id_card_read()
-        # print("Kartı okutunuz !!")
-        textLabel.configure(text="Kartı okutunuz")
-
-        while not stop_event.is_set() and not get_id:
-            sleep(.1)
-        id_number = id_number_temp
-        users = []
-        for (dirpath, dirnames, filenames) in walk("users"):
-            users.extend(filenames)
-            break
         if "{}.json".format(id_number) in users:
             textLabel.configure(text="Bu kart tanımlıdır !!")
             textLabel2.configure(text="Lütfen önce kayıtı siliniz.")
@@ -291,10 +285,10 @@ def register():
         while not stop_event.is_set() and not get_rank:
             sleep(.1)'''
 
+        loc_find()
         i = 0
         parmak = ""
         while not stop_event.is_set():
-            loc_find()
             if i == 0:
                 parmak = "BAŞ"
             if i == 1:
@@ -475,7 +469,8 @@ def root_tk():
 
 
 def resetButton():
-    global textLabel, textLabel2, win
+    global textLabel, textLabel2, win, c
+
     def cancel():
         stop_event.set()
         win.destroy()
@@ -506,9 +501,12 @@ def resetButton():
     winFrame.rowconfigure(2, weight=2)
     winFrame.rowconfigure(3, weight=1)
     '''//////////////////////////////////'''
-
-    headLabel = tk.Label(winFrame, text="KAYIT", bg=winColor, font="Courier 18",
-                         border=0, highlightthickness=0)
+    if c == "r":
+        headLabel = tk.Label(winFrame, text="YENİ KAYIT", bg=winColor, font="Courier 18",
+                             border=0, highlightthickness=0)
+    else:
+        headLabel = tk.Label(winFrame, text="KAYIT SİLME", bg=winColor, font="Courier 18",
+                             border=0, highlightthickness=0)
     headLabel.grid(row=0, column=0, sticky="ewsn")
 
     textLabel = tk.Label(winFrame, text="", bg=winColor, font="Courier 16",
@@ -582,7 +580,8 @@ def kayit_press(event):
 
 
 def kayit_release(event):
-    global get_rank
+    global c
+    c = "r"
     kayit_button.configure(bg=reg_color, activebackground=reg_color)
     stop_event.clear()
     root_tk()
@@ -619,8 +618,11 @@ def delete_press(event):
 
 
 def delete_release(event):
+    global c
+    c = "d"
     delete_button.configure(bg=del_color, activebackground=del_color)
-
+    stop_event.clear()
+    resetButton()
 
 delete_button.bind("<ButtonPress>", delete_press)
 delete_button.bind("<ButtonRelease>", delete_release)
